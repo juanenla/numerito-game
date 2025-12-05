@@ -60,3 +60,8 @@ Icon
 *~
 .tmp/
 temp/
+
+# Sensitive configuration files
+src/main/resources/application-local.properties
+.env
+.env.local
