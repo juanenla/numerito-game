@@ -10,5 +10,5 @@ services:
       - key: SUPABASE_SERVICE_ROLE_KEY
         sync: false
       - key: FRONTEND_URL
-        value: https://numerito.vercel.app
+        value: https://numerito-game.vercel.app
     healthCheckPath: /api/health

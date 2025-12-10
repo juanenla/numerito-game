@@ -1,27 +1,12 @@
 package com.mijuego.numerito.api.dto;
 
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 
-/**
- * DTO para guardar un nuevo score
- */
 public record SaveScoreRequest(
-    @Size(max = 50, message = "Player name must not exceed 50 characters")
-    String playerName,
+        @NotBlank(message = "El nombre del jugador es requerido") String playerName,
 
-    @Min(value = 1, message = "Attempts must be at least 1")
-    int attempts,
+        @Positive(message = "El número de intentos debe ser positivo") int attempts,
 
-    String gameId
-) {
-    /**
-     * Normaliza el nombre del jugador
-     */
-    public String getPlayerNameOrDefault() {
-        if (playerName == null || playerName.isBlank()) {
-            return "Anónimo";
-        }
-        return playerName.trim();
-    }
+        String gameId) {
 }

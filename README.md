@@ -260,7 +260,18 @@ logging.level.com.mijuego.numerito=INFO
 - 🔄 Frontend web con Vite + React
 - 🔄 Base de datos con Supabase
 - 🔄 Sistema de puntuación y ranking
-- 🔄 Despliegue en la nube
+## Despliegue en la nube (Render)
+
+### Configuración de Variables de Entorno
+
+Para que la aplicación funcione en Render, debes configurar las siguientes variables de entorno:
+
+1. **SUPABASE_URL**: La URL de tu proyecto en Supabase (ej: `https://xyz.supabase.co`).
+2. **SUPABASE_SERVICE_ROLE_KEY**: La "service_role" key de Supabase (¡No la anon/public key!).
+3. **FRONTEND_URL**: La URL de tu frontend desplegado (ej: `https://numerito-game.vercel.app`).
+4. **PORT**: (Opcional) Render lo asigna automáticamente, usualmente 8080 o 10000.
+
+Estas variables se configuran en la sección "Environment" de tu servicio en Render dashboard.
 
 ## Repositorio
 
