@@ -61,11 +61,10 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGenericError(Exception ex) {
-        // DEBUG MODE: Exponiendo error real para debuggear
+        // En producción, no deberías exponer detalles internos
         ErrorResponse error = ErrorResponse.of(
                 "INTERNAL_SERVER_ERROR",
-                "Error: " + ex.getMessage() // Mostrando mensaje real
-        );
+                "Ocurrió un error inesperado. Por favor, intenta de nuevo más tarde.");
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }
 }
