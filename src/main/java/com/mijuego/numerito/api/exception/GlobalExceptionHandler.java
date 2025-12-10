@@ -15,7 +15,8 @@ import java.util.stream.Collectors;
 /**
  * Manejador global de excepciones para la API.
  *
- * Centraliza el manejo de errores y los convierte en respuestas JSON consistentes.
+ * Centraliza el manejo de errores y los convierte en respuestas JSON
+ * consistentes.
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -28,10 +29,10 @@ public class GlobalExceptionHandler {
             MethodArgumentNotValidException ex) {
 
         String errors = ex.getBindingResult()
-            .getFieldErrors()
-            .stream()
-            .map(FieldError::getDefaultMessage)
-            .collect(Collectors.joining(", "));
+                .getFieldErrors()
+                .stream()
+                .map(FieldError::getDefaultMessage)
+                .collect(Collectors.joining(", "));
 
         ErrorResponse error = ErrorResponse.of("VALIDATION_ERROR", errors);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
@@ -60,10 +61,10 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGenericError(Exception ex) {
-        // En producción, no deberías exponer detalles internos
+        // DEBUG MODE: Exponiendo error real para debuggear
         ErrorResponse error = ErrorResponse.of(
-            "INTERNAL_SERVER_ERROR",
-            "Ocurrió un error inesperado. Por favor, intenta de nuevo más tarde."
+                "INTERNAL_SERVER_ERROR",
+                "Error: " + ex.getMessage() // Mostrando mensaje real
         );
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }
