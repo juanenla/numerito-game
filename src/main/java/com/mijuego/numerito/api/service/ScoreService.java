@@ -31,9 +31,15 @@ public class ScoreService {
                 .header("Prefer", "return=representation")
                 .bodyValue(body)
                 .retrieve()
+                .onStatus(status -> status.isError(), response -> response.bodyToMono(String.class)
+                        .flatMap(errorBody -> {
+                            System.err.println("❌ Supabase Error: " + response.statusCode() + " - " + errorBody);
+                            return Mono.error(
+                                    new RuntimeException("Supabase Error: " + response.statusCode() + " " + errorBody));
+                        }))
                 .bodyToFlux(ScoreResponse.class)
                 .next()
-                .doOnError(Throwable::printStackTrace); // Supabase returns the created object in an array
+                .doOnError(e -> System.err.println("❌ Error saving score: " + e.getMessage()));
     }
 
     public Flux<ScoreResponse> getTopScores(int limit) {
