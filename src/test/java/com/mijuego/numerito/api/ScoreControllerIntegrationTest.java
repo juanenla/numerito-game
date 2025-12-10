@@ -32,46 +32,44 @@ class ScoreControllerIntegrationTest {
     @Test
     void testSaveScore_WithValidData_Returns201() throws Exception {
         SaveScoreRequest request = new SaveScoreRequest(
-            "TestPlayer",
-            5,
-            "test-game-123"
-        );
+                "TestPlayer",
+                5,
+                "test-game-123",
+                60);
 
         mockMvc.perform(post("/api/scores")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
-            .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.message", is("Score guardado exitosamente")))
-            .andExpect(jsonPath("$.scoreId", notNullValue()));
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.message", is("Score guardado exitosamente")))
+                .andExpect(jsonPath("$.scoreId", notNullValue()));
     }
 
     @Test
     void testSaveScore_WithInvalidAttempts_Returns400() throws Exception {
         SaveScoreRequest request = new SaveScoreRequest(
-            "TestPlayer",
-            -1,  // Attempts inválidos
-            "test-game-123"
-        );
-
+                "TestPlayer",
+                -1, // Attempts inválidos
+                "test-game-123",
+                60);
         mockMvc.perform(post("/api/scores")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
-            .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.error", notNullValue()));
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error", notNullValue()));
     }
 
     @Test
     void testSaveScore_WithEmptyPlayerName_Returns400() throws Exception {
         SaveScoreRequest request = new SaveScoreRequest(
-            "",  // Nombre vacío
-            5,
-            "test-game-123"
-        );
-
+                "", // Nombre vacío
+                5,
+                "test-game-123",
+                60);
         mockMvc.perform(post("/api/scores")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
-            .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -79,8 +77,8 @@ class ScoreControllerIntegrationTest {
         mockMvc.perform(get("/api/scores/top")
                 .param("limit", "10")
                 .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$", isA(java.util.List.class)));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", isA(java.util.List.class)));
     }
 
     @Test
@@ -88,42 +86,42 @@ class ScoreControllerIntegrationTest {
         mockMvc.perform(get("/api/scores/top")
                 .param("limit", "5")
                 .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$", isA(java.util.List.class)))
-            .andExpect(jsonPath("$.length()", lessThanOrEqualTo(5)));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", isA(java.util.List.class)))
+                .andExpect(jsonPath("$.length()", lessThanOrEqualTo(5)));
     }
 
     @Test
     void testGetTopScores_DefaultLimit_Returns10OrLess() throws Exception {
         mockMvc.perform(get("/api/scores/top")
                 .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$", isA(java.util.List.class)))
-            .andExpect(jsonPath("$.length()", lessThanOrEqualTo(10)));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", isA(java.util.List.class)))
+                .andExpect(jsonPath("$.length()", lessThanOrEqualTo(10)));
     }
 
     @Test
     void testScoreResponseStructure() throws Exception {
         // Guardar un score primero
         SaveScoreRequest saveRequest = new SaveScoreRequest(
-            "StructureTest",
-            3,
-            "test-structure-123"
-        );
+                "StructureTest",
+                3,
+                "test-structure-123",
+                45);
 
         mockMvc.perform(post("/api/scores")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(saveRequest)))
-            .andExpect(status().isCreated());
+                .andExpect(status().isCreated());
 
         // Obtener el top scores y verificar estructura
         mockMvc.perform(get("/api/scores/top")
                 .param("limit", "1")
                 .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$[0].id", notNullValue()))
-            .andExpect(jsonPath("$[0].playerName", notNullValue()))
-            .andExpect(jsonPath("$[0].attempts", isA(Number.class)))
-            .andExpect(jsonPath("$[0].createdAt", notNullValue()));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id", notNullValue()))
+                .andExpect(jsonPath("$[0].playerName", notNullValue()))
+                .andExpect(jsonPath("$[0].attempts", isA(Number.class)))
+                .andExpect(jsonPath("$[0].createdAt", notNullValue()));
     }
 }
