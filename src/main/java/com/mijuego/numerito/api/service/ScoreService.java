@@ -51,7 +51,7 @@ public class ScoreService {
                                 .uri(uriBuilder -> uriBuilder
                                                 .path("/scores")
                                                 .queryParam("select", "*")
-                                                .queryParam("order", "attempts.asc,created_at.desc")
+                                                .queryParam("order", "attempts.asc,time_seconds.asc")
                                                 .queryParam("limit", limit)
                                                 .build())
                                 .retrieve()
