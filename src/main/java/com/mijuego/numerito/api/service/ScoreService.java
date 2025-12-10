@@ -31,7 +31,9 @@ public class ScoreService {
                 .header("Prefer", "return=representation")
                 .bodyValue(body)
                 .retrieve()
-                .bodyToMono(ScoreResponse.class); // Supabase returns the created object
+                .bodyToFlux(ScoreResponse.class)
+                .next()
+                .doOnError(Throwable::printStackTrace); // Supabase returns the created object in an array
     }
 
     public Flux<ScoreResponse> getTopScores(int limit) {
